@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat Application</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+	<script> 
+	var name = prompt("Please enter your name");
+	while(name ==''){name = prompt("Please enter your name");}
+</script>
+	<script src="https://kit.fontawesome.com/c153436894.js" crossorigin="anonymous"></script>
+	<style>
+		.textbox{
+			bottom: 0;
+		}
+		.boxheigth{
+			height: calc(100vh - 129px);
+		}
+		.rounded {
+		    border-radius: 0.5rem!important;
+		}
+		ul li{
+			width:fit-content;
+			max-width: 70%;
+		}
+		ul{list-style-type: none;}
+		.bgcolor{
+			font-family: 'Kalam', cursive;
+			background-color: paleturquoise;padding: 13px 0;
+		    border-top-right-radius: 1.25rem!important;
+		    border-top-left-radius: 1.25rem!important;
+		}
+		.br{border-bottom-right-radius: 1.25rem!important;}
+		.bl{border-bottom-left-radius: 1.25rem!important;}
+		.jointtxt{font-size: 10px; background-color: darkgrey;}
+		.rounded {border-radius: 0.25rem!important;}
+		::-webkit-scrollbar {
+		  width: 5px;
+		}
+		/* Track */
+		::-webkit-scrollbar-track {
+		  box-shadow: inset 0 0 5px grey; 
+		  border-radius: 100px;
+		}
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: red; 
+		  border-radius: 100px;
+		}
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  width: 10px;
+		}
+		@media screen and (max-width:530px){
+			.boxheigth{
+				height: calc(100vh - 196px)
+			}
+		}
+	</style>
+</head>
+<body>
+
+
+<div class="display-4 text-center">Welcome To Live Chat</div>
+<div class="d-flex boxheigth">
+	<div class="container w-75 bg-light rounded overflow-auto" id="chat-board">
+		<ul class="ul p-0 m-0">
+		</ul>
+		
+	</div>
+</div>
+
+
+<div class="form-group col-md-12 justify-content-center position-fixed textbox">
+	<form class="col-md-6 mr-auto ml-auto d-flex" action="">
+		<input type="text" class="form-control col-md-9 mr-3" name="message-input" autocomplete="off">
+		<input type="submit" class="btn btn-outline-primary pl-2 col-md-2" name="">
+	</form>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	console.log(name)
+ const form = document.querySelector("form");
+ const input = document.querySelector("input");
+  messageList = document.querySelector("ul");
+ const socket = io();
+
+
+ // socket.emit('message', ['new','joining',name]);
+ socket.emit('joining msg', [false,name]);
+
+ 
+ var FinalMessage,content;
+ form.addEventListener("submit", function(e){
+ 	// console.log("submit the form")
+ 	// console.log("value enter by user is "+input.value)
+ 	e.preventDefault();
+ 	if(input.value == ''){return}
+ 	FinalMessage = [true,name,input.value];
+ 	socket.emit("message", FinalMessage);
+ 	input.value = '';
+ });
+  function addMessageToHTML(message) {
+  	const li = document.createElement("li");
+  	var board = document.getElementById('chat-board')
+  	if(message[0]===true){
+		if(message[1] == name){
+			li.classList.add('p-2','ml-auto');
+			content ='<div class="bgcolor px-2 bl">'+message[2]+'</div>'
+		}else{
+			li.classList.add('bgcolor','px-2','br')
+			content = message[1]+' : '+message[2]
+		}
+	  	li.innerHTML = content;
+  	}
+  	if(message[0]===false){
+
+  		li.classList.add('ml-auto','mr-auto','py-2')
+  		li.style.textAlign = "center"
+  		// li.innerText = message[1]+""+message[2]+""+message[3]
+  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message[1]+'</div>'
+  		console.log(message)
+  	}
+  	messageList.append(li)
+  	// console.log("sender name "+message[0]+" receiver name :"+name)
+  	board.scrollTop = board.scrollHeight
+  }
+ socket.on("message", addMessageToHTML);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $(function () {
+  $('[data-toggle="popover"]').popover()
+})
+            $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</body>
+</html>
