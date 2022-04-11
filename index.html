@@ -6,31 +6,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-
-
-
-
-
-
-
-
-
-
-
-		<script> 
-// var retrievedData = localStorage.getItem("ActiveUser")
-// var dd = JSON.parse(retrievedData);
-// console.log("string",dd)
-	// var UserArray = []
+	<script> 
 	var name = prompt("Please enter your name");
 	while(name ==''){name = prompt("Please enter your name");}
-	// var UserArray = JSON.parse(localStorage.getItem("ActiveUser"))
-	// localStorage.clear();
-	// console.log(localStorage.getItem("ActiveUser").lenght)
-	// var a = UserArray.push(name);
-	// console.log(a)
-	// localStorage.setItem("ActiveUser2","hi")
-	// console.log(localStorage.getItem("ActiveUser2"));
 </script>
 	<script src="https://kit.fontawesome.com/c153436894.js" crossorigin="anonymous"></script>
 	<style>
@@ -83,18 +61,13 @@
 	</style>
 </head>
 <body>
-
-
 <div class="display-4 text-center">Welcome To Live Chat</div>
 <div class="d-flex boxheigth">
 	<div class="container w-75 bg-light rounded overflow-auto" id="chat-board">
 		<ul class="ul p-0 m-0">
-		</ul>
-		
+		</ul>		
 	</div>
 </div>
-
-
 <div class="form-group col-md-12 justify-content-center position-fixed textbox">
 	<form class="col-md-8 mr-auto ml-auto d-flex" action="">
 	<!-- 	<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
@@ -105,11 +78,11 @@
   <div class="col-md-10 input-group-prepend pr-0">
 <div class="btn-group dropup">
   <button type="button" class="btn btn-secondary dropdown-toggle" id="sendto" data-toggle="dropdown" aria-expanded="false">Everyone</button>
-  <div class="dropdown-menu">
-    <button class="dropdown-item" type="button" onclick="sendTo(this)">Everyone</button>
-    <button class="dropdown-item" type="button" onclick="sendTo(this)">Khizar</button>
-    <button class="dropdown-item" type="button" onclick="sendTo(this)">Test1</button>
-    <button class="dropdown-item" type="button" onclick="sendTo(this)">Test2</button>
+  <div class="dropdown-menu" id="dropdown-menu">
+    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>
+    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Khizar</button>
+    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Test1</button>
+    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Test2</button>
   </div>
 </div>
 		<input type="text" class="form-control rounded-0" name="message-input" autocomplete="off">
@@ -118,14 +91,12 @@
 	</form>
 </div>
 <script src="/socket.io/socket.io.js"></script>
-<script >
- const form = document.querySelector("form");
- const input = document.querySelector("input");
-  messageList = document.querySelector("ul");
- const socket = io();
- // socket.emit('message', ['new','joining',name]);
+<script>
+	function sendToUser(val){
+	 	document.getElementById('sendto').innerText = val;
+	}
 </script>
-	<script type="module">
+<script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
   // TODO: Add SDKs for Firebase products that you want to use
@@ -148,76 +119,100 @@
 	  from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"
 	  const db = getDatabase();
 	  var user="User"+name
-	  function InsertData(){
-	  	set(ref(db,"UserJoin--"+name+Date().substr(0,25)),{
-	  		UserName:name
+	  function InsertUserEntry(){
+	  	set(ref(db,"User/JoinedUser--"+name+Date().substr(0,25)),{
+	  		UserName:name,
+	  		JoiningTime : Date()
 	  	})
 	  	.then(()=>{console.log("name register");})
 	  	.catch((error)=>{console.log(error)})
 	  }
-	// InsertData()
-	 const form = document.querySelector("form");
- const input = document.querySelector("input");
-  messageList = document.querySelector("ul");
- const socket = io();
-  socket.emit('joining msg', [false,name]);
-   form.addEventListener("submit", function(e){
+	  function InsertUserChats(){
+	  	set(ref(db,"Chat/"+name+"Chats/SendTime"+Date().slice(16,-31)),{
+	  		Time : Date().slice(16,-31),
+	  		message : arguments[0],
+	  		To : arguments[1]
+	  	})
+	  	.then(()=>{console.log("name register");})
+	  	.catch((error)=>{console.log(error)})
+	  }
+
+
+	// console.log(name)
+ 	const form = document.querySelector("form");
+	const input = document.querySelector("input");
+  	var messageList = document.querySelector("ul");
+ 	const socket = io();
+
+
+ // socket.emit('message', ['new','joining',name]);
+ socket.emit('joining msg', [false,name]);
+	// InsertUserEntry()
+
+ var FinalMessage,content;
+ form.addEventListener("submit", function(e){
+ 	// console.log("submit the form")
+ 	// console.log("value enter by user is "+input.value)
  	e.preventDefault();
  	if(input.value == ''){return}
  	FinalMessage = [true,name,input.value,sendto_Value()];
+ 	// InsertUserChats(input.value,sendto_Value())
  	socket.emit("message", FinalMessage);
  	input.value = '';
+ 	sendToUser("Everyone");
  });
-	var FinalMessage,content;
-	function sendTo(val){
-	 	document.getElementById('sendto').innerText = val.innerText;
-	}
 	function sendto_Value(){return document.getElementById('sendto').innerText}
-	function myFunction(e) {
-		e.preventDefault();
-	  console.log('hi')
-	}
-	function addMessageToHTML(message) {
-	  	const li = document.createElement("li");
-	  	var board = document.getElementById('chat-board')
-	  	if(message[0]===true){
-			if(message[1] == name){
-				li.classList.add('p-2','ml-auto');
-				content ='<div class="bgcolor px-2 bl">'+message[2]+'</div>'
-			}else{
-			  	if(message[3]!="Everyone"){
+  function addMessageToHTML(message) {
+  	const li = document.createElement("li");
+  	var board = document.getElementById('chat-board')
+  	if(message[0]===true){
+		if(message[1] == name){
+			li.classList.add('p-2','ml-auto');
+			content ='<div class="bgcolor px-2 bl">'+message[2]+'</div>'
+		}else{
+				if(message[3]!="Everyone"){
 			  		if (message[3] != name){
 				  		return
 			  		}
 			  	}
-				li.classList.add('bgcolor','px-2','br')
-				content = message[1]+' : '+message[2]
-			}
-		  	li.innerHTML = content;
-	  	}
-	  	if(message[0]===false){
+			li.classList.add('bgcolor','px-2','br')
+			content = message[1]+' : '+message[2]
+		}
+	  	li.innerHTML = content;
+  	}
+  	if(message[0]===false){
 
-	  		li.classList.add('ml-auto','mr-auto','py-2')
-	  		li.style.textAlign = "center"
-	  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message[1]+'</div>'
-	  	}
-	  	messageList.append(li)
-	  	board.scrollTop = board.scrollHeight
-	  }
+  		li.classList.add('ml-auto','mr-auto','py-2')
+  		li.style.textAlign = "center"
+  		// li.innerText = message[1]+""+message[2]+""+message[3]
+  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message[1]+'</div>'
+  		socket.on("UserLoggIn",(msg)=>{
+  			var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
+  			msg.forEach((item)=>{
+  				if(item == name)
+  					 { return; }
+  				content += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+item+'</button>'
+  			})
+  			document.getElementById("dropdown-menu").innerHTML = content;
+  		});
+  		// console.log(message)
+  	}
+  	messageList.append(li)
+  	// console.log("sender name "+message[0]+" receiver name :"+name)
+  	board.scrollTop = board.scrollHeight
+  }
+ socket.on("message", addMessageToHTML);
+ socket.on("dis",(msg)=>{
+ 	socket.emit("peoplename",name)
+ 	console.log(msg)
+ })
+socket.on("UserLoggIn",(msg1,msg2)=>{
+	console.log("Active people",msg1,msg2)
+	document.getElementById("dropdown-menu").innerHTML += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+msg1[ [msg1.length - 1] ]+'</button>'
 
-	 socket.on("message", addMessageToHTML);
 
-	  window.addEventListener('beforeunload', function (e) {
-	InsertData()
-    e.preventDefault();
-    e.returnValue = '';
-	 		console.log("data up")
-	 	console.log("done print dis")
-    console.log("tjis is ")
-});
-	</script>
-
-
+})
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script type="text/javascript">
             $(function () {
@@ -228,4 +223,4 @@
 })        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </body>
-</html>
+</html> 
