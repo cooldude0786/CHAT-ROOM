@@ -1,278 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Chat Application</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-	<script> 
-	// var name = prompt("Please enter your name");
-	// while(name ==''){name = prompt("Please enter your name");}
-	var name = "khizar"
-</script>
-	<script src="https://kit.fontawesome.com/c153436894.js" crossorigin="anonymous"></script>
-	<style>
-		.textbox{
-			bottom: 0;
-		}
-		.boxheigth{
-			height: calc(100vh - 129px);
-		}
-		.rounded {
-		    border-radius: 0.5rem!important;
-		}
-		.container {background-color:  azure!important}
-		ul li{
-			width:fit-content;
-			max-width: 70%;
-		}
-		ul{list-style-type: none;}
-		.bgcolor{
-			font-family: 'Kalam', cursive;
-		    border-top-right-radius: 1.25rem!important;
-		    border-top-left-radius: 1.25rem!important;
-		    padding: 13px 0;
-		}
-		hr {
-		    margin-top: 1rem;
-		    margin-bottom: 1rem;
-		    border: 0;
-		    border-top: 3px solid rgba(0,0,0,.1);
-		}
-		.bgcol{background-color: paleturquoise;}
-		.bgd2d{background-color: black; color: wheat;}
-		.br{border-bottom-right-radius: 1.25rem!important;}
-		.bl{border-bottom-left-radius: 1.25rem!important;}
-		.jointtxt{font-size: 10px; background-color: darkgrey;}
-		.rounded {border-radius: 0.25rem!important;}
-		.contact{font-size: 26px;font-family: 'Rubik Moonrocks', cursive;}
-		::-webkit-scrollbar {
-		  width: 5px;
-		}
-		/* Track */
-		::-webkit-scrollbar-track {
-		  box-shadow: inset 0 0 5px grey; 
-		  border-radius: 100px;
-		}
-		/* Handle */
-		::-webkit-scrollbar-thumb {
-		  background: red; 
-		  border-radius: 100px;
-		}
-		/* Handle on hover */
-		::-webkit-scrollbar-thumb:hover {
-		  width: 10px;
-		}
-		@media screen and (max-width:530px){
-			.boxheigth{
-				height: calc(100vh - 196px)
-			}
-		}
-	</style>
-</head>
-<body>
-<div class="display-4 text-center">Welcome To Live Chat <span id="DisplayName"> </span></div>
-<div class="d-flex boxheigth">
-	<div class="container w-75 px-0 rounded d-flex" id="chat-board">
-		<div class="w-25 pb-2 pt-2 px-2 Contacts">
-			<div class="h-100 p-1 overflow-auto" style=" background-color: #F8F9B8!important">
-			<div class="">
-			 	<div class="px-1 contact" >
-			 		Contacts
-			 	</div>
-			</div>
-			<hr>
-			<div>
-				<ul class="pl-0" id="Contact_list">
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Khizar</button></li>
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test1</button></li>
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test2</button></li>
-				</ul>
-			</div>
-			</div>
-		</div>
-		<div class="w-100 overflow-auto">
-		<ul class="ul p-0 m-0 ">
-			<li class="ml-auto mr-auto py-2" style="text-align: center;">
-				<div class="px-2 jointtxt rounded">Khizar join the Chat</div>
-			</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="p-2 ml-auto">
-				<div class="bgcolor px-2 bgcol bl">asxasx</div>
-			</li>	
-		</ul>
-		</div>
-	</div>
-</div>
-<div class="form-group col-md-12 justify-content-center position-fixed textbox">
-	<form class="col-md-8 mr-auto ml-auto d-flex" action="">
-	<!-- 	<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-			hoi
-      <span class="sr-only">Toggle Dropdown</span>
-    </button>
- --><div class="input-group">
-  <div class="col-md-10 input-group-prepend pr-0">
-<div class="btn-group dropup">
-  <button type="button" class="btn btn-secondary dropdown-toggle" id="sendto" data-toggle="dropdown" aria-expanded="false">Everyone</button>
-  <div class="dropdown-menu" id="dropdown-menu">
-    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>
-    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Khizar</button>
-    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Test1</button>
-    <button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Test2</button>
-  </div>
-</div>
-		<input type="text" class="form-control rounded-0" name="message-input" autocomplete="off">
-  </div>
- 	<input type="submit" class="btn btn-outline-primary pl-2 col-md-2" name="">
-	</form>
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-	function sendToUser(val){
-	 	document.getElementById('sendto').innerText = val;
-	}
-</script>
-<script type="module">
-		var a = document.querySelector("span")
-	a.innerHTML = name
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-	const firebaseConfig = {
-	    apiKey: "AIzaSyArozbdTXvE48PJJ6vmfvlJhYw8piGasUU",
-	    authDomain: "chat-io-3de79.firebaseapp.com",
-	    databaseURL: "https://chat-io-3de79-default-rtdb.asia-southeast1.firebasedatabase.app",
-	    projectId: "chat-io-3de79",
-	    storageBucket: "chat-io-3de79.appspot.com",
-	    messagingSenderId: "404478950204",
-	    appId: "1:404478950204:web:c1f29fa040abc669d7fc39"
-	  };
-
-	  // Initialize Firebase
-	  const app = initializeApp(firebaseConfig);
-	  import {getDatabase, ref, set, child, update, remove}
-	  from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"
-	  const db = getDatabase();
-	  var user="User"+name
-	  function InsertUserEntry(){
-	  	set(ref(db,"User/JoinedUser--"+name+Date().substr(0,25)),{
-	  		UserName:name,
-	  		JoiningTime : Date()
-	  	})
-	  	.then(()=>{console.log("name register");})
-	  	.catch((error)=>{console.log(error)})
-	  }
-	  function InsertUserChats(){
-	  	set(ref(db,"Chat/"+name+"Chats/SendTime"+Date().slice(16,-31)),{
-	  		Time : Date().slice(16,-31),
-	  		message : arguments[0],
-	  		To : arguments[1]
-	  	})
-	  	.then(()=>{console.log("name register");})
-	  	.catch((error)=>{console.log(error)})
-	  }
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+var name , ListOfUser=[]
+http.listen(4040, '0.0.0.0', () => console.log("listening on http://localhost:4040"));
+app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
+io.on("connection", function(socket) {
 
 
-	// console.log(name)
- 	const form = document.querySelector("form");
-	const input = document.querySelector("input");
-  	var messageList = document.querySelectorAll("ul")[1];
- 	const socket = io();
-
-
- // socket.emit('message', ['new','joining',name]);
- socket.emit('joining msg', [false,name]);
-	// InsertUserEntry()
-
- var FinalMessage,content;
- form.addEventListener("submit", function(e){
- 	// console.log("submit the form")
- 	// console.log("value enter by user is "+input.value)
- 	e.preventDefault();
- 	if(input.value == ''){return}
- 	FinalMessage = [true,name,input.value,sendto_Value()];
- 	// {Type:"Message,Name:name,Message:input.value,Receiver:Sendto_Value()"}
- 	// 
- 	// InsertUserChats(input.value,sendto_Value())
- 	// socket.emit("message", FinalMessage);
- 	var receiver = sendto_Value();
- 	socket.emit("message",{Type:"Message",Name:name ,Message: input.value ,Receiver: receiver } )
- 	input.value = '';
- 	sendToUser("Everyone");
+		socket.on("disconnect", function(msg) {
+		io.emit("dis","The User is Leaving")
+		ListOfUser=[]
+		io.emit("message",{Type : "Joining",
+							Message : "User Leave the Chat"});
+		console.log('Dead!'+msg[1]);
+	});
+		socket.on("message", function(msg) {
+   		io.emit("message", msg);
+  		console.log("useer send a message :"+msg)
  });
-	function sendto_Value(){return document.getElementById('sendto').innerText}
-  function addMessageToHTML(message) {
-  	console.log(message)
-  	const li = document.createElement("li");
-  	var board = document.getElementById('chat-board')
-  	if(message.Type=="Message"){
-  		console.log("enter into mesage if block")
-		if(message.Name == name){
-			li.classList.add('p-2','ml-auto');
-			(message.Receiver != "Everyone" )?content = '<div class="bgcolor px-2 bgd2d bl">'+message.Message+'</div>':content ='<div class="bgcolor px-2 bgcol bl">'+message.Message+'</div>';
-		}else{
-				if(message.Receiver!="Everyone"){
-			  		if (message.Receiver != name){
-				  		return
-			  		}
-			  	}
-(message.Receiver == name)?li.classList.add('bgd2d'):li.classList.add('bgcol')
-			li.classList.add('bgcolor','px-2','br')
-			content = message.Name+' : '+message.Message
-		}
-	  	li.innerHTML = content;
-  	}
-  	if(message.Type == "Joining"){
-  		console.log("pass joinnig if block")
-  		li.classList.add('ml-auto','mr-auto','py-2')
-  		li.style.textAlign = "center"
-  		// li.innerText = message[1]+""+message[2]+""+message[3]
-  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message.Message+'</div>'
-  		socket.on("UserLoggIn",(msg)=>{
-  			var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
-  			msg.forEach((item)=>{
-  				if(item == name)
-  					 { return; }
-  				content += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+item+'</button>'
-  			})
-  			document.getElementById("dropdown-menu").innerHTML = content;
-  		});
-  		// console.log(message)
-  	}
-  	messageList.append(li)
-  	// console.log("sender name "+message[0]+" receiver name :"+name)
-  	board.scrollTop = board.scrollHeight
-  }
- socket.on("message", addMessageToHTML);
- socket.on("dis",(msg)=>{
- 	socket.emit("peoplename",name)
- 	console.log(msg)
- })
-socket.on("UserLoggIn",(msg1)=>{
-	console.log("Active people",msg1)
-	document.getElementById("dropdown-menu").innerHTML += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+msg1[ [msg1.length - 1] ]+'</button>'
 
-
-})
-</script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-            $(function () {
-  $('[data-toggle="popover"]').popover()
-})
-            $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})        </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-</body>
-</html> 
+		socket.on("peoplename",async (msg)=>{
+			console.log("msg:= ",msg)
+			ListOfUser.push(msg)  
+			console.log("active people in ListOfUser array:=",ListOfUser,ListOfUser.length)
+			await io.emit("UserLoggIn",ListOfUser) 
+		});
+		socket.on('joining msg', function(msg){
+		name=msg[1]
+		console.log("joing the chat")
+		ListOfUser.push(name)
+		msg[1] = msg[1]+" join the Chat"
+		io.emit("message", {Type : "Joining",
+							Name : name,
+							Message : name+" join the Chat"});
+		console.log(msg[1],ListOfUser)
+		io.emit("UserLoggIn",ListOfUser)
+	});
+ 
+});   
