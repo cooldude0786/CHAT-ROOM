@@ -3,12 +3,13 @@
 <head>
 	<title>Chat Application</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 	<script> 
-	var name = prompt("Please enter your name");
-	while(name ==''){name = prompt("Please enter your name");}
+	// var name = prompt("Please enter your name");
+	// while(name ==''){name = prompt("Please enter your name");}
+	var name = "khizar"
 </script>
 	<script src="https://kit.fontawesome.com/c153436894.js" crossorigin="anonymous"></script>
 	<style>
@@ -21,6 +22,7 @@
 		.rounded {
 		    border-radius: 0.5rem!important;
 		}
+		.container {background-color:  azure!important}
 		ul li{
 			width:fit-content;
 			max-width: 70%;
@@ -28,14 +30,23 @@
 		ul{list-style-type: none;}
 		.bgcolor{
 			font-family: 'Kalam', cursive;
-			background-color: paleturquoise;padding: 13px 0;
 		    border-top-right-radius: 1.25rem!important;
 		    border-top-left-radius: 1.25rem!important;
+		    padding: 13px 0;
 		}
+		hr {
+		    margin-top: 1rem;
+		    margin-bottom: 1rem;
+		    border: 0;
+		    border-top: 3px solid rgba(0,0,0,.1);
+		}
+		.bgcol{background-color: paleturquoise;}
+		.bgd2d{background-color: black; color: wheat;}
 		.br{border-bottom-right-radius: 1.25rem!important;}
 		.bl{border-bottom-left-radius: 1.25rem!important;}
 		.jointtxt{font-size: 10px; background-color: darkgrey;}
 		.rounded {border-radius: 0.25rem!important;}
+		.contact{font-size: 26px;font-family: 'Rubik Moonrocks', cursive;}
 		::-webkit-scrollbar {
 		  width: 5px;
 		}
@@ -61,11 +72,43 @@
 	</style>
 </head>
 <body>
-<div class="display-4 text-center">Welcome To Live Chat</div>
+<div class="display-4 text-center">Welcome To Live Chat <span id="DisplayName"> </span></div>
 <div class="d-flex boxheigth">
-	<div class="container w-75 bg-light rounded overflow-auto" id="chat-board">
-		<ul class="ul p-0 m-0">
-		</ul>		
+	<div class="container w-75 px-0 rounded d-flex" id="chat-board">
+		<div class="w-25 pb-2 pt-2 px-2 Contacts">
+			<div class="h-100 p-1 overflow-auto" style=" background-color: #F8F9B8!important">
+			<div class="">
+			 	<div class="px-1 contact" >
+			 		Contacts
+			 	</div>
+			</div>
+			<hr>
+			<div>
+				<ul class="pl-0" id="Contact_list">
+				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Khizar</button></li>
+				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test1</button></li>
+				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test2</button></li>
+				</ul>
+			</div>
+			</div>
+		</div>
+		<div class="w-100 overflow-auto">
+		<ul class="ul p-0 m-0 ">
+			<li class="ml-auto mr-auto py-2" style="text-align: center;">
+				<div class="px-2 jointtxt rounded">Khizar join the Chat</div>
+			</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="bgcol bgcolor px-2 br">asas : er</li>
+			<li class="p-2 ml-auto">
+				<div class="bgcolor px-2 bgcol bl">asxasx</div>
+			</li>	
+		</ul>
+		</div>
 	</div>
 </div>
 <div class="form-group col-md-12 justify-content-center position-fixed textbox">
@@ -97,6 +140,8 @@
 	}
 </script>
 <script type="module">
+		var a = document.querySelector("span")
+	a.innerHTML = name
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
   // TODO: Add SDKs for Firebase products that you want to use
@@ -141,7 +186,7 @@
 	// console.log(name)
  	const form = document.querySelector("form");
 	const input = document.querySelector("input");
-  	var messageList = document.querySelector("ul");
+  	var messageList = document.querySelectorAll("ul")[1];
  	const socket = io();
 
 
@@ -156,36 +201,43 @@
  	e.preventDefault();
  	if(input.value == ''){return}
  	FinalMessage = [true,name,input.value,sendto_Value()];
+ 	// {Type:"Message,Name:name,Message:input.value,Receiver:Sendto_Value()"}
+ 	// 
  	// InsertUserChats(input.value,sendto_Value())
- 	socket.emit("message", FinalMessage);
+ 	// socket.emit("message", FinalMessage);
+ 	var receiver = sendto_Value();
+ 	socket.emit("message",{Type:"Message",Name:name ,Message: input.value ,Receiver: receiver } )
  	input.value = '';
  	sendToUser("Everyone");
  });
 	function sendto_Value(){return document.getElementById('sendto').innerText}
   function addMessageToHTML(message) {
+  	console.log(message)
   	const li = document.createElement("li");
   	var board = document.getElementById('chat-board')
-  	if(message[0]===true){
-		if(message[1] == name){
+  	if(message.Type=="Message"){
+  		console.log("enter into mesage if block")
+		if(message.Name == name){
 			li.classList.add('p-2','ml-auto');
-			content ='<div class="bgcolor px-2 bl">'+message[2]+'</div>'
+			(message.Receiver != "Everyone" )?content = '<div class="bgcolor px-2 bgd2d bl">'+message.Message+'</div>':content ='<div class="bgcolor px-2 bgcol bl">'+message.Message+'</div>';
 		}else{
-				if(message[3]!="Everyone"){
-			  		if (message[3] != name){
+				if(message.Receiver!="Everyone"){
+			  		if (message.Receiver != name){
 				  		return
 			  		}
 			  	}
+(message.Receiver == name)?li.classList.add('bgd2d'):li.classList.add('bgcol')
 			li.classList.add('bgcolor','px-2','br')
-			content = message[1]+' : '+message[2]
+			content = message.Name+' : '+message.Message
 		}
 	  	li.innerHTML = content;
   	}
-  	if(message[0]===false){
-
+  	if(message.Type == "Joining"){
+  		console.log("pass joinnig if block")
   		li.classList.add('ml-auto','mr-auto','py-2')
   		li.style.textAlign = "center"
   		// li.innerText = message[1]+""+message[2]+""+message[3]
-  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message[1]+'</div>'
+  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message.Message+'</div>'
   		socket.on("UserLoggIn",(msg)=>{
   			var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
   			msg.forEach((item)=>{
@@ -206,8 +258,8 @@
  	socket.emit("peoplename",name)
  	console.log(msg)
  })
-socket.on("UserLoggIn",(msg1,msg2)=>{
-	console.log("Active people",msg1,msg2)
+socket.on("UserLoggIn",(msg1)=>{
+	console.log("Active people",msg1)
 	document.getElementById("dropdown-menu").innerHTML += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+msg1[ [msg1.length - 1] ]+'</button>'
 
 
