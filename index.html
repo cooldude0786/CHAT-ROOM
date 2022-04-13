@@ -7,9 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300&family=Rubik+Moonrocks&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 	<script> 
-	// var name = prompt("Please enter your name");
-	// while(name ==''){name = prompt("Please enter your name");}
-	var name = "khizar"
+	var name = prompt("Please enter your name");
+	while(name ==''){name = prompt("Please enter your name");}
+	var Channel="message";
+	// var name = "khizar"
 </script>
 	<script src="https://kit.fontawesome.com/c153436894.js" crossorigin="anonymous"></script>
 	<style>
@@ -74,7 +75,7 @@
 <body>
 <div class="display-4 text-center">Welcome To Live Chat <span id="DisplayName"> </span></div>
 <div class="d-flex boxheigth">
-	<div class="container w-75 px-0 rounded d-flex" id="chat-board">
+	<div class="container w-75 px-0 rounded d-flex">
 		<div class="w-25 pb-2 pt-2 px-2 Contacts">
 			<div class="h-100 p-1 overflow-auto" style=" background-color: #F8F9B8!important">
 			<div class="">
@@ -84,31 +85,35 @@
 			</div>
 			<hr>
 			<div>
+
 				<ul class="pl-0" id="Contact_list">
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Khizar</button></li>
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test1</button></li>
-				    <li><button class="btn btn-outline-info border-0" type="button" onclick="sendToUser(this.innerText)">Test2</button></li>
-				</ul>
+				 <!--    <li><button class="btn btn-outline-info border-0" onclick="ChangeScreen(0)" type="button">Khizar</button></li>
+				    <li><button class="btn btn-outline-info border-0" onclick="ChangeScreen(1)" type="button">Test1</button></li>
+				    <li><button class="btn btn-outline-info border-0" onclick="ChangeScreen(2)" type="button">Test2</button></li>
+ -->				</ul>
 			</div>
 			</div>
 		</div>
-		<div class="w-100 overflow-auto">
-		<ul class="ul p-0 m-0 ">
-			<li class="ml-auto mr-auto py-2" style="text-align: center;">
-				<div class="px-2 jointtxt rounded">Khizar join the Chat</div>
-			</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="bgcol bgcolor px-2 br">asas : er</li>
-			<li class="p-2 ml-auto">
-				<div class="bgcolor px-2 bgcol bl">asxasx</div>
-			</li>	
-		</ul>
-		</div>
+		<div class="w-100 overflow-auto" id="chat-board">
+			<ul class="ul p-0 m-0 " id="GroupChatScreen">
+				<li class="ml-auto mr-auto py-2" style="text-align: center;">
+					<div class="px-2 jointtxt rounded">Khizar join the Chat 1</div>
+				</li>
+				<li class="bgcol bgcolor px-2 br">asas : er</li>
+			</ul>
+		<!-- 	<ul class="ul p-0 d-none m-0 " id="GroupChatScreen">
+				<li class="ml-auto mr-auto py-2" style="text-align: center;">
+					<div class="px-2 jointtxt rounded">Khizar join the Chat 2</div>
+				</li>
+				<li class="bgcol bgcolor px-2 br">asas : er</li>
+				<li class="bgcol bgcolor px-2 br">asas : er</li>
+			</ul> -->
+<!-- 			<ul class="d-none ul p-0 m-0 " id="GroupChatScreen">
+				<li class="ml-auto mr-auto py-2" style="text-align: center;">
+					<div class="px-2 jointtxt rounded">Khizar join the Chat 2</div>
+				</li>
+			</ul>
+ -->		</div>
 	</div>
 </div>
 <div class="form-group col-md-12 justify-content-center position-fixed textbox">
@@ -137,7 +142,31 @@
 <script>
 	function sendToUser(val){
 	 	document.getElementById('sendto').innerText = val;
+	 	console.log(Channel)
 	}
+</script>
+<script>	
+	function ChangeScreen() {
+	var board = document.getElementById('chat-board')
+  	var Screens = board.querySelectorAll("ul")
+	for(i=0;i<Screens.length;i++){
+		if(i==arguments[0]){
+			Screens[i].classList.remove("d-none")
+		console.log("press button "+arguments[0],"vlaue of button "+arguments[1])
+		}
+		// else
+		// {
+		// 	console.log(i)
+		// }
+		else{
+			Screens[i].classList.add("d-none")
+		}
+	}
+	// if (arguments[0]==1) {
+	// 	Screens[0].classList.add("d-none")
+	// }
+	// console.log(Screens)
+}
 </script>
 <script type="module">
 		var a = document.querySelector("span")
@@ -164,7 +193,7 @@
 	  from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"
 	  const db = getDatabase();
 	  var user="User"+name
-	  function InsertUserEntry(){
+function InsertUserEntry(){
 	  	set(ref(db,"User/JoinedUser--"+name+Date().substr(0,25)),{
 	  		UserName:name,
 	  		JoiningTime : Date()
@@ -172,24 +201,23 @@
 	  	.then(()=>{console.log("name register");})
 	  	.catch((error)=>{console.log(error)})
 	  }
-	  function InsertUserChats(){
-	  	set(ref(db,"Chat/"+name+"Chats/SendTime"+Date().slice(16,-31)),{
+function InsertUserChats(){
+	  set(ref(db,"Chat/"+name+"Chats/SendTime"+Date().slice(16,-31)),{
 	  		Time : Date().slice(16,-31),
 	  		message : arguments[0],
 	  		To : arguments[1]
 	  	})
 	  	.then(()=>{console.log("name register");})
-	  	.catch((error)=>{console.log(error)})
-	  }
+	  	.catch((error)=>{console.log(error)})}
 
 
 	// console.log(name)
  	const form = document.querySelector("form");
 	const input = document.querySelector("input");
-  	var messageList = document.querySelectorAll("ul")[1];
+  	var messageList = document.getElementById("GroupChatScreen");
  	const socket = io();
-
-
+  	var board = document.getElementById('chat-board')
+  	var Screens = board.querySelectorAll("ul")
  // socket.emit('message', ['new','joining',name]);
  socket.emit('joining msg', [false,name]);
 	// InsertUserEntry()
@@ -211,10 +239,9 @@
  	sendToUser("Everyone");
  });
 	function sendto_Value(){return document.getElementById('sendto').innerText}
-  function addMessageToHTML(message) {
+function addMessageToHTML(message) {
   	console.log(message)
   	const li = document.createElement("li");
-  	var board = document.getElementById('chat-board')
   	if(message.Type=="Message"){
   		console.log("enter into mesage if block")
 		if(message.Name == name){
@@ -226,26 +253,48 @@
 				  		return
 			  		}
 			  	}
-(message.Receiver == name)?li.classList.add('bgd2d'):li.classList.add('bgcol')
+			(message.Receiver == name)?li.classList.add('bgd2d'):li.classList.add('bgcol')
 			li.classList.add('bgcolor','px-2','br')
 			content = message.Name+' : '+message.Message
 		}
 	  	li.innerHTML = content;
   	}
-  	if(message.Type == "Joining"){
+  		if(message.Type == "Joining"){
   		console.log("pass joinnig if block")
   		li.classList.add('ml-auto','mr-auto','py-2')
   		li.style.textAlign = "center"
   		// li.innerText = message[1]+""+message[2]+""+message[3]
-  		li.innerHTML ='<div class="px-2 jointtxt rounded">'+message.Message+'</div>'
-  		socket.on("UserLoggIn",(msg)=>{
-  			var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
-  			msg.forEach((item)=>{
+  			li.innerHTML ='<div class="px-2 jointtxt rounded">'+message.Message+'</div>'
+  				socket.on("UserLoggIn",(msg)=>{
+
+
+
+
+
+  				var contact_content = '<li><button class="btn btn-outline-info border-0" onclick="ChangeScreen(0,this.innerText)" type="button">Group Chat</button></li>'
+  				var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
+  				msg.forEach((item)=>{
+  					var i=1;
   				if(item == name)
   					 { return; }
   				content += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+item+'</button>'
+  				contact_content += '<li><button class="btn btn-outline-info border-0" onclick="ChangeScreen('+i+',this.innerText)" type="button">'+item+'</button></li>'
+  				i++;
+  				if(board.getElementsByClassName(item).length !=1 )
+  					{board.innerHTML += '<ul class="d-none ul p-0 m-0 '+item+'" id="GroupChatScreen"><li class="ml-auto mr-auto py-2" style="text-align: center;"><div class="px-2 jointtxt rounded">End-To-End Encryption</div></li></ul>'}
+  				else{
+  					 return ;
+  					}
   			})
+
+
+
+
+
+
   			document.getElementById("dropdown-menu").innerHTML = content;
+  			document.getElementById("Contact_list").innerHTML = contact_content
+
   		});
   		// console.log(message)
   	}
@@ -253,17 +302,21 @@
   	// console.log("sender name "+message[0]+" receiver name :"+name)
   	board.scrollTop = board.scrollHeight
   }
- socket.on("message", addMessageToHTML);
- socket.on("dis",(msg)=>{
- 	socket.emit("peoplename",name)
- 	console.log(msg)
- })
+
+
+
 socket.on("UserLoggIn",(msg1)=>{
 	console.log("Active people",msg1)
-	document.getElementById("dropdown-menu").innerHTML += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+msg1[ [msg1.length - 1] ]+'</button>'
+	document.getElementById("dropdown-menu").innerHTML += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+msg1[ [msg1.length - 1] ]+'</button>'})
+
+socket.on("message", addMessageToHTML);
 
 
-})
+
+socket.on("dis",(msg)=>{
+ 	socket.emit("peoplename",name)
+ 	console.log(msg)})
+socket.on("")
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script type="text/javascript">
@@ -276,3 +329,4 @@ socket.on("UserLoggIn",(msg1)=>{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </body>
 </html> 
+<!-- 78.85 -->
