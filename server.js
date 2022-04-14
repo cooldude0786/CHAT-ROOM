@@ -37,4 +37,11 @@ io.on("connection", function(socket) {
 		io.emit("UserLoggIn",ListOfUser)
 	});
  
+		// ListOfUser.forEach((channelName)=>{
+			socket.on("E2E",(msg)=>{
+				io.emit(msg.Receiver,msg)
+			})//on socket end
+		// });//for each end
+
+
 });   
