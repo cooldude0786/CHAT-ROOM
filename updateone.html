@@ -185,14 +185,14 @@ function updateDetails(){
 			}//if end that check 
 			else{
 				for(let k in obj)
-				{	console.log("Run inside for loop")
+				{	//console.log("Run inside for loop")
 					if(!Data.includes(k)){
 						Data.push(k)
 					}
 				}
 			}
 			setTimeout(()=>{
-			console.log("data Found",Data)
+			//console.log("data Found",Data)
 			},500)
 		}
 		else{
@@ -237,8 +237,8 @@ function ChangeScreen() {
 		    for(let k in obj){
 		    	if(k == '404'){break}
 		    	(obj[k]["User"]==name)?content +='<li class="p-2 ml-auto"><div class="bgcolor px-2 bgcol bl">'+obj[k]["Message"]+'</div></li>':content +='<li class="p-2 bgcol bgcolor px-2 br"><div class="bgcolor px-2 bgcol bl">'+obj[k]["Message"]+'</div></li>'
-				console.log("Inside Content:-",content,obj)
-				console.log(typeof k)
+				// console.log("Inside Content:-",content,obj)
+				// console.log(typeof k)
 				}
 				ChatScreen[0].innerHTML = content
 				board.scrollTop = board.scrollHeight
@@ -278,15 +278,20 @@ function ChangeScreen() {
   	var messageList = document.getElementById("GroupChatScreen");
  	const socket = io();
   	var board = document.getElementById('chat-board')
-  	var Screens = board.querySelectorAll("ul")
+  	var Screens = board.querySelectorAll("ul") , socketid
 
- 	socket.on(name,(msg,m)=>{
- 		console.log("Private",msg,m)
- 	});
-
+ 	// socket.to("t2").emit("hi this messasge is for t2");
+ 	socket.on(name,(m)=>{console.log("m says ",m)})
 
  	socket.emit('joining msg', [false,name]);
+
 	// InsertUserEntry()
+	// socket = io.connect('http://localhost:<portNumber>'); 
+ // socket.on('connect', () => {
+ //    socketid = socket.id; // an alphanumeric id...
+ //    console.log(socket.id)
+ // });
+ // console.log(socketid); // undefined
 
  var FinalMessage,content;
  form.addEventListener("submit", function(e){ 
@@ -320,13 +325,15 @@ function ChangeScreen() {
 		board.scrollTop = board.scrollHeight
 
  	}
- 	else
- 		socket.emit("message",obj);
+ 	else{
+	console.log("Emiting the OBJ IN Message channel")
+ 	socket.emit("message",obj);
+ }
  	input.value = '';
  	sendToUser("Everyone");
  });
 function addMessageToHTML(message) {
-  	console.log("Enter into add t o html function ",message)
+  	// console.log("Enter into add t o html function ",message)
   	
   	// console.log("medium",Channel)
   	const li = document.createElement("li");
@@ -379,23 +386,18 @@ function addMessageToHTML(message) {
   				socket.on("UserLoggIn",(msg)=>{
 
   				var contact_content = '<li><button class="btn btn-outline-info border-0 pr-1 pl-1" onclick="ChangeScreen(0,this.innerText)" type="button">Group Chat</button></li>'
-
-
   				var li = document.createElement("LI") , btn = document.createElement("BUTTON");
   				btn.classList.add("btn","btn-outline-info","border-0","pr-1","pl-1")
   				btn.onclick =function(){ChangeScreen(0,this.innerText)};
   				var txt = document.createTextNode("Group Chat");
   				btn.appendChild(txt);
   				li.appendChild(btn)
-
 	  			document.getElementById("Contact_list").innerHTML = "";
   				document.getElementById("Contact_list").appendChild(li)
-
-
   				var i = 1;
   				var content = '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">Everyone</button>';
   				msg.forEach((item)=>{
-  					console.log("Inside the for each looop",i)
+  					// console.log("Inside the for each looop",i)
   				if(item == name)
   					 { return; }
   				content += '<button class="dropdown-item" type="button" onclick="sendToUser(this.innerText)">'+item+'</button>'
@@ -420,16 +422,9 @@ function addMessageToHTML(message) {
   				// 	}
   				i = i + 1;
   			})
-
-
-
-
-
-
   			document.getElementById("dropdown-menu").innerHTML = content;
-
   		});
-  		// console.log(message)
+  	// console.log(message)
   	}
   	// console.log("sender name "+message[0]+" receiver name :"+name)
 			  	board.children[0].append(li)
