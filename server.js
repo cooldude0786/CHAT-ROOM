@@ -43,7 +43,7 @@ function InsertUserEntrie(){
 	});
 	// usersRef.remove("willdel");
 }
-function GetContactFromFirebase(){
+function 	(){
 ref2.on('value', (snapshot) => {
 	let  obj = snapshot.val()  
   let result = obj; 
@@ -71,6 +71,10 @@ GetContactFromFirebase()
 http.listen(port, '0.0.0.0', () => console.log(`listening on http://localhost:${port}`));
 io.on("connection", function(socket) {
 
+
+		// io.in("t1123").emit("HI this is private message")
+
+
 		// InsertUserEntry()
 		socket.on("disconnect", function(msg) {
 		io.emit("dis","The User is Leaving")
@@ -81,6 +85,7 @@ io.on("connection", function(socket) {
 	});
 		socket.on("message", function(msg) {
    		io.emit("message", msg);
+   		console.log("Thid is from message socket ")
   		// console.log("useer send a message :"+msg)
  });
 
@@ -129,3 +134,4 @@ let ref = (check == false) ? db.ref('Chat/'+msg.Sender+'-'+msg.Receiver) : db.re
   
    
 });   
+//it was my honour to work with the greatest emoployees of insiprational and dream company for needed skill employee
